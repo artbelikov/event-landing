@@ -1,0 +1,16 @@
+.footer {
+  border-top: 1px solid var(--mantine-color-gray-3, #e9ecef);
+}
+
+.centerText {
+  text-align: center;
+}
+
+.wrapGroup {
+  flex-wrap: wrap;
+}
+
+.extraInfo {
+  font-size: 0.875rem;
+  color: var(--mantine-color-gray-7, #495057);
+}

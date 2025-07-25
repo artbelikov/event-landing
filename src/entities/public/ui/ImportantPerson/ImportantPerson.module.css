@@ -1,0 +1,18 @@
+.paper {
+  max-width: 400px;
+  width: 100%;
+  background: var(--mantine-color-body);
+  margin: 0 auto;
+}
+
+.avatar {
+  flex-shrink: 0;
+}
+
+.stack {
+  flex: 1;
+}
+
+.bio {
+  word-break: break-word;
+}

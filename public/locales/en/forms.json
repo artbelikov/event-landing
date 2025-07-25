@@ -1,0 +1,28 @@
+{
+  "apply": {
+    "labels": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "position": "Position",
+      "message": "Message / Motivation"
+    },
+    "placeholders": {
+      "fullName": "Your full name",
+      "email": "you@example.com",
+      "phone": "Your phone number",
+      "company": "Your company",
+      "position": "Your position",
+      "message": "Tell us why you want to participate"
+    },
+    "validation": {
+      "fullNameMinLength": "Full name must be at least 2 characters",
+      "invalidEmail": "Invalid email address",
+      "phoneMinLength": "Phone number is too short",
+      "companyRequired": "Company is required",
+      "positionRequired": "Position is required",
+      "messageMinLength": "Message must be at least 10 characters"
+    }
+  }
+}

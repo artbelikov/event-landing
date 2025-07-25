@@ -1,0 +1,8 @@
+/* ErrorAlert component styles */
+.alert {
+  margin-bottom: 1rem;
+}
+
+.alert:empty {
+  display: none;
+}

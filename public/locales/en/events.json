@@ -1,0 +1,33 @@
+{
+  "home": {
+    "title": "Future Leaders Summit 2025",
+    "subtitle": "Empowering Innovation & Leadership",
+    "countdown": {
+      "label": "Event starts in",
+      "eventStartsAt": "Event starts at",
+      "eventStarted": "The event has started!"
+    },
+    "location": {
+      "title": "Event Location",
+      "mapTitle": "Event Location Map",
+      "address": "Astana International Expo Center, Qabanbay Batyr Ave 53, Astana, Kazakhstan"
+    },
+    "keynote": {
+      "name": "Dr. Timur Akhmetov",
+      "title": "Keynote Speaker, CEO of TechVision",
+      "bio": "Dr. Akhmetov is a renowned innovator in AI and digital transformation, leading TechVision to global success."
+    },
+    "organizer": {
+      "name": "Astana Event Group",
+      "description": "Astana Event Group is a leading organizer of international conferences and summits in Central Asia.",
+      "website": "https://astanaevents.kz"
+    },
+    "socials": {
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn"
+    },
+    "tooltips": {
+      "website": "Website"
+    }
+  }
+}

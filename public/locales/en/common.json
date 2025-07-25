@@ -1,0 +1,37 @@
+{
+  "buttons": {
+    "apply": "Apply",
+    "signIn": "Sign in",
+    "logout": "Logout",
+    "continueWithGoogle": "Continue with Google",
+    "applyNow": "Apply Now"
+  },
+  "loading": {
+    "loading": "Loading...",
+    "submitting": "Submitting..."
+  },
+  "status": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning"
+  },
+  "notifications": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "actions": {
+    "required": "Required",
+    "optional": "Optional"
+  },
+  "time": {
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds"
+  },
+  "divider": {
+    "or": "OR"
+  }
+}

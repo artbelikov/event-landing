@@ -1,0 +1,22 @@
+.root {
+  max-width: 400px;
+  width: 100%;
+  background: var(--mantine-color-body);
+  margin: 0 auto;
+}
+
+.avatar {
+  flex-shrink: 0;
+}
+
+.stack {
+  flex: 1;
+}
+
+.description {
+  word-break: break-word;
+}
+
+.inlineFlex {
+  display: inline-flex;
+}

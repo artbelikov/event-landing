@@ -1,0 +1,30 @@
+{
+  "buttons": {
+    "apply": "Подать заявку",
+    "signIn": "Войти",
+    "continueWithGoogle": "Продолжить с Google",
+    "applyNow": "Подать заявку сейчас"
+  },
+  "loading": {
+    "loading": "Загрузка...",
+    "submitting": "Отправка..."
+  },
+  "status": {
+    "success": "Успех",
+    "error": "Ошибка",
+    "warning": "Предупреждение"
+  },
+  "actions": {
+    "required": "Обязательно",
+    "optional": "Необязательно"
+  },
+  "time": {
+    "days": "Дни",
+    "hours": "Часы",
+    "minutes": "Минуты",
+    "seconds": "Секунды"
+  },
+  "divider": {
+    "or": "ИЛИ"
+  }
+}

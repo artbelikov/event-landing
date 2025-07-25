@@ -1,0 +1,26 @@
+.root {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.timeBlock {
+  width: 60px;
+}
+
+.separator {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.mtMd {
+  margin-top: 16px;
+}
+
+.lhTight {
+  line-height: 1.1;
+}
+
+.mbXs {
+  margin-bottom: 8px;
+}
