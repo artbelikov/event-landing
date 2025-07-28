@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AuthProvider } from './entities/auth/context/AuthContext';
-import { HomePage, LoginPage } from './pages';
+import { AuthCallbackPage, LoginPage } from './pages';
 import { AdminConferencesPage, AdminGuestsPage, DashboardPage } from './pages/admin';
+import { EventPage } from './pages/EventPage';
 import { ProtectedRoute } from './shared/ui/ProtectedRoute';
 
 const router = createBrowserRouter([
@@ -16,7 +17,12 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/auth/callback',
+    element: <AuthCallbackPage />,
+  },
+  {
     path: '/admin/dashboard',
+    index: true,
     element: (
       <AuthProvider>
         <ProtectedRoute>
@@ -46,8 +52,8 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/',
-    element: <HomePage />,
+    path: '/:customUrl',
+    element: <EventPage />,
   },
 ]);
 

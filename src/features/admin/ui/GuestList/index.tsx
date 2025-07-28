@@ -128,11 +128,23 @@ export function GuestList({ onGuestSelect, limit, conferenceId }: GuestListProps
     );
   }
 
+  const getConferenceDate = (eventDates: any[]) => {
+    if (!eventDates || eventDates.length === 0) return '';
+    const firstDate = eventDates[0];
+    if (firstDate.type === EventDateType.SINGLE && firstDate.date) {
+      return new Date(firstDate.date).toLocaleDateString();
+    }
+    if (firstDate.type === EventDateType.PERIOD && firstDate.from) {
+      return new Date(firstDate.from).toLocaleDateString();
+    }
+    return '';
+  };
+
   const conferenceOptions = [
     { value: '', label: 'All Conferences' },
     ...conferences.map((conference) => ({
       value: conference.id.toString(),
-      label: `${conference.name} (${new Date(conference.startDate).toLocaleDateString()})`,
+      label: `${conference.name} (${getConferenceDate((conference as any).eventDates)})`,
     })),
   ];
 

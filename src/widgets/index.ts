@@ -1,3 +1,3 @@
 export { DashboardStats } from './admin/DashboardStats';
-export { RecentConferences } from './public/RecentConferences';
+export { RecentConferences } from './admin/RecentConferences';
 export { DashboardQuickActions } from './admin/DashboardQuickActions';

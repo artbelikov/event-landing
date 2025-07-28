@@ -1,10 +1,11 @@
-import React from 'react';
-import { IconChevronRight, IconEye } from '@tabler/icons-react';
+import { IconChevronRight } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { ActionIcon, Badge, Button, Card, Group, Paper, Stack, Text, Title } from '@mantine/core';
+import { Button, Card, Group, Stack, Text, Title } from '@mantine/core';
 import type { Conference } from '@/api-client';
 import { useConferencesList } from '@/entities/conference';
 import { InfiniteScrollContainer } from '@/shared/ui/InfiniteScrollContainer';
+import { ConferenceItem } from './ConferenceItem';
 
 interface RecentConferencesProps {
   className?: string;
@@ -17,47 +18,23 @@ export function RecentConferences({
   enableInfiniteScroll = false,
   maxHeight = 400,
 }: RecentConferencesProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  const query = useConferencesList({
-    limit: enableInfiniteScroll ? 10 : 5,
-  });
+  const query = useConferencesList({ limit: enableInfiniteScroll ? 10 : 5 });
 
-  const renderConferenceItem = (conference: Conference, index: number) => (
-    <Paper key={conference.id} p="sm" withBorder>
-      <Group justify="apart">
-        <div>
-          <Text fw={500}>{conference.name}</Text>
-          <Text size="sm" c="dimmed">
-            {new Date(conference.startDate).toLocaleDateString()} - {conference.place}
-          </Text>
-        </div>
-        <Group gap="xs">
-          <Badge color={conference.status === 'ACTIVE' ? 'green' : 'gray'} variant="light">
-            {conference.status}
-          </Badge>
-          <ActionIcon
-            variant="subtle"
-            size="sm"
-            onClick={() => navigate(`/admin/conferences/${conference.id}`)}
-          >
-            <IconEye size={14} />
-          </ActionIcon>
-        </Group>
-      </Group>
-    </Paper>
-  );
+  const renderConferenceItem = (conf: Conference) => <ConferenceItem conference={conf} />;
 
   return (
     <Card withBorder padding="lg" radius="md" className={className}>
       <Group justify="apart" mb="md">
-        <Title order={3}>Recent Conferences</Title>
+        <Title order={3}>{t('dashboard.recentConferences.title')}</Title>
         <Button
           variant="subtle"
           size="sm"
           rightSection={<IconChevronRight size={14} />}
           onClick={() => navigate('/admin/conferences')}
         >
-          View All
+          {t('dashboard.recentConferences.viewAll')}
         </Button>
       </Group>
 
@@ -71,7 +48,7 @@ export function RecentConferences({
           renderItem={renderConferenceItem}
           emptyStateComponent={
             <Text c="dimmed" ta="center" py="xl">
-              No conferences found
+              {t('dashboard.recentConferences.empty')}
             </Text>
           }
           h={maxHeight}
@@ -80,19 +57,15 @@ export function RecentConferences({
         <>
           {query.isLoading ? (
             <Group justify="center" p="xl">
-              <Text>Loading...</Text>
+              <Text>{t('loading.loading')}</Text>
             </Group>
           ) : query.data.length === 0 ? (
             <Text c="dimmed" ta="center" py="xl">
-              No conferences found
+              {t('dashboard.recentConferences.empty')}
             </Text>
           ) : (
             <Stack gap="sm">
-              {query.data
-                .slice(0, 5)
-                .map((conference: Conference, index: number) =>
-                  renderConferenceItem(conference, index)
-                )}
+              {query.data.slice(0, 5).map((conf: Conference) => renderConferenceItem(conf))}
             </Stack>
           )}
         </>

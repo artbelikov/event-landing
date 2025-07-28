@@ -1,6 +1,7 @@
 import { IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Badge, Button, Group, Table, Text } from '@mantine/core';
-import type { Conference } from '@/api-client';
+import { EventDateType, type Conference } from '@/api-client';
 
 interface ConferenceTableRowProps {
   conference: Conference;
@@ -15,6 +16,26 @@ export function ConferenceTableRow({
   onEdit,
   onDelete,
 }: ConferenceTableRowProps) {
+  const { t } = useTranslation();
+
+  const formatEventDates = (eventDates: any[]) => {
+    if (!eventDates || eventDates.length === 0) return t('adminConferences.table.noDates');
+
+    return eventDates.map((eventDate: any, index: number) => (
+      <div key={index}>
+        {eventDate.type === EventDateType.SINGLE && eventDate.date && (
+          <Text size="sm">{new Date(eventDate.date).toLocaleDateString()}</Text>
+        )}
+        {eventDate.type === EventDateType.PERIOD && eventDate.from && (
+          <Text size="sm">
+            {new Date(eventDate.from).toLocaleDateString()}
+            {eventDate.to && ` - ${new Date(eventDate.to).toLocaleDateString()}`}
+          </Text>
+        )}
+      </div>
+    ));
+  };
+
   return (
     <Table.Tr>
       <Table.Td>
@@ -28,19 +49,7 @@ export function ConferenceTableRow({
         </div>
       </Table.Td>
 
-      <Table.Td>
-        <Text size="sm">{new Date(conference.startDate).toLocaleDateString()}</Text>
-        <Text size="xs" c="dimmed">
-          {new Date(conference.startDate).toLocaleTimeString()}
-        </Text>
-      </Table.Td>
-
-      <Table.Td>
-        <Text size="sm">{new Date(conference.endDate).toLocaleDateString()}</Text>
-        <Text size="xs" c="dimmed">
-          {new Date(conference.endDate).toLocaleTimeString()}
-        </Text>
-      </Table.Td>
+      <Table.Td>{formatEventDates((conference as any).eventDates)}</Table.Td>
 
       <Table.Td>
         <Text size="sm">{conference.place}</Text>
@@ -52,8 +61,12 @@ export function ConferenceTableRow({
 
       <Table.Td>
         <Badge color={conference.status === 'ACTIVE' ? 'green' : 'gray'} variant="light">
-          {conference.status}
+          {t(`adminConferences.status.${conference.status.toLowerCase()}`)}
         </Badge>
+      </Table.Td>
+
+      <Table.Td>
+        <Text size="sm">{new Date(conference.createdAt).toLocaleDateString()}</Text>
       </Table.Td>
 
       <Table.Td>
@@ -74,7 +87,7 @@ export function ConferenceTableRow({
               onClick={() => onDelete(conference)}
               size="sm"
             >
-              Delete
+              {t('adminConferences.deleteButton')}
             </Button>
           )}
         </Group>

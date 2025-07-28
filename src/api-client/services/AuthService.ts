@@ -54,17 +54,33 @@ user?: User,
     }
 
     /**
-     * Google authentication callback
-     * @returns any Google authentication successful.
+     * Initiate Google OAuth authentication
+     * @returns void 
      * @throws ApiError
      */
-    public static async authControllerGoogleAuthCallback(): Promise<{
-access_token?: string,
-user?: User,
-}> {
+    public static async authControllerGoogleAuth(): Promise<void> {
+        const result = await __request({
+            method: 'GET',
+            path: `/auth/google`,
+            errors: {
+                302: `Redirects to Google OAuth consent screen.`,
+            },
+        });
+        return result.body;
+    }
+
+    /**
+     * Google authentication callback
+     * @returns void 
+     * @throws ApiError
+     */
+    public static async authControllerGoogleAuthCallback(): Promise<void> {
         const result = await __request({
             method: 'GET',
             path: `/auth/google/callback`,
+            errors: {
+                302: `Redirects to frontend with authentication token.`,
+            },
         });
         return result.body;
     }

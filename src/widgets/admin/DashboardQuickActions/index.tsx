@@ -1,5 +1,5 @@
-import React from 'react';
 import { IconPlus, IconSettings, IconUserCheck, IconUsers } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Group, Stack, Title } from '@mantine/core';
 
@@ -8,12 +8,13 @@ interface DashboardQuickActionsProps {
 }
 
 export function DashboardQuickActions({ className }: DashboardQuickActionsProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
     <Card withBorder padding="lg" radius="md" className={className}>
       <Group justify="apart" mb="md">
-        <Title order={3}>Quick Actions</Title>
+        <Title order={3}>{t('dashboard.quickActions.title')}</Title>
       </Group>
 
       <Stack gap="sm">
@@ -26,7 +27,7 @@ export function DashboardQuickActions({ className }: DashboardQuickActionsProps)
             navigate('/admin/conferences/create');
           }}
         >
-          Create New Conference
+          {t('dashboard.quickActions.createConference')}
         </Button>
 
         <Button
@@ -38,7 +39,7 @@ export function DashboardQuickActions({ className }: DashboardQuickActionsProps)
             navigate('/admin/guests');
           }}
         >
-          Manage Guests
+          {t('dashboard.quickActions.manageGuests')}
         </Button>
 
         <Button
@@ -50,7 +51,7 @@ export function DashboardQuickActions({ className }: DashboardQuickActionsProps)
             navigate('/admin/users');
           }}
         >
-          Manage Users
+          {t('dashboard.quickActions.manageUsers')}
         </Button>
 
         <Button
@@ -62,7 +63,7 @@ export function DashboardQuickActions({ className }: DashboardQuickActionsProps)
             navigate('/admin/settings');
           }}
         >
-          System Settings
+          {t('dashboard.quickActions.systemSettings')}
         </Button>
       </Stack>
     </Card>

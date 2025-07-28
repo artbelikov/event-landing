@@ -17,12 +17,24 @@
       "message": "Tell us why you want to participate"
     },
     "validation": {
+      "fullNameRequired": "Full name is required",
       "fullNameMinLength": "Full name must be at least 2 characters",
+      "emailRequired": "Email is required",
       "invalidEmail": "Invalid email address",
+      "phoneRequired": "Phone number is required",
       "phoneMinLength": "Phone number is too short",
       "companyRequired": "Company is required",
       "positionRequired": "Position is required",
+      "messageRequired": "Message is required",
       "messageMinLength": "Message must be at least 10 characters"
+    },
+    "success": {
+      "submitMessage": "Your application has been submitted successfully!"
+    },
+    "errors": {
+      "submitFailed": "Failed to submit application. Please try again.",
+      "validationError": "Please check your input and try again.",
+      "serverError": "Server error. Please try again later."
     }
   }
 }

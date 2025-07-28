@@ -46,7 +46,7 @@ i18n
     updateMissing: isDevelopment,
 
     react: {
-      useSuspense: false, // Disable suspense for SSR compatibility
+      useSuspense: true, // Disable suspense for SSR compatibility
     },
   });
 

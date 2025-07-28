@@ -1,35 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from 'mantine-form-zod-resolver';
-import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import { Conference, ConferenceService, ConferenceStatus } from '@/api-client';
-
-const schema = z.object({
-  name: z
-    .string()
-    .min(3, 'Name must be at least 3 characters')
-    .transform((val) => val.trim()),
-  description: z
-    .string()
-    .min(10, 'Description must be at least 10 characters')
-    .transform((val) => val.trim()),
-  startDate: z.date({ required_error: 'Start date is required' }),
-  endDate: z.date({ required_error: 'End date is required' }),
-  place: z
-    .string()
-    .min(1, 'Place is required')
-    .transform((val) => val.trim()),
-  headliner: z
-    .string()
-    .min(1, 'Headliner is required')
-    .transform((val) => val.trim()),
-  status: z.nativeEnum(ConferenceStatus),
-  formId: z.string().min(1, 'Form ID is required'),
-  ownerId: z.string().min(1, 'Owner ID is required'),
-});
-
-export type ConferenceFormValues = z.infer<typeof schema>;
+import { Conference, ConferenceService, ConferenceStatus, EventDateType } from '@/api-client';
+import { createConferenceSchema, type ConferenceFormData } from '../model/validation';
 
 interface Props {
   conference?: Conference;
@@ -37,20 +12,20 @@ interface Props {
 }
 
 export function useConferenceForm({ conference, onSuccess }: Props = {}) {
+  const { t } = useTranslation();
   const isEdit = !!conference;
+  const conferenceSchema = createConferenceSchema(t);
+  const [blocks, setBlocks] = useState<any[]>([]);
 
-  const form = useForm<ConferenceFormValues>({
-    validate: zodResolver(schema),
+  const form = useForm<ConferenceFormData>({
+    validate: zodResolver(conferenceSchema),
     initialValues: {
       name: '',
       description: '',
-      startDate: new Date(),
-      endDate: new Date(),
+      eventDates: [{ type: EventDateType.SINGLE, date: new Date() }],
       place: '',
-      headliner: '',
-      status: 'ACTIVE' as ConferenceStatus,
-      formId: '',
-      ownerId: '',
+      customUrl: '',
+      status: ConferenceStatus.INACTIVE,
     },
   });
 
@@ -59,50 +34,71 @@ export function useConferenceForm({ conference, onSuccess }: Props = {}) {
       form.setValues({
         name: conference.name,
         description: conference.description,
-        startDate: new Date(conference.startDate),
-        endDate: new Date(conference.endDate),
+        eventDates:
+          (conference as any).eventDates.map((d: any) => ({
+            ...d,
+            date: d.date ? new Date(d.date) : undefined,
+            from: d.from ? new Date(d.from) : undefined,
+            to: d.to ? new Date(d.to) : undefined,
+          })) ?? [],
         place: conference.place,
-        headliner: conference.headliner,
+        customUrl: conference.customUrl ?? '',
         status: conference.status,
-        formId: conference.formId.toString(),
-        ownerId: conference.ownerId.toString(),
       });
+      setBlocks((conference as any).pageBlocks ?? []);
     }
   }, [conference]);
 
-  const handleSubmit = async (values: ConferenceFormValues) => {
+  const handleSubmit = async (values: ConferenceFormData) => {
     try {
       const payload = {
-        name: values.name,
-        description: values.description,
-        startDate: (values.startDate as Date).toISOString(),
-        endDate: (values.endDate as Date).toISOString(),
-        place: values.place,
-        headliner: values.headliner,
-        status: values.status,
-        formId: parseInt(values.formId),
-        ownerId: parseInt(values.ownerId),
+        ...values,
+        eventDates: values.eventDates.map((d) =>
+          d.type === EventDateType.SINGLE
+            ? { type: EventDateType.SINGLE, date: d.date.toISOString() }
+            : {
+                type: EventDateType.PERIOD,
+                from: d.from.toISOString(),
+                to: d.to ? d.to.toISOString() : undefined,
+              }
+        ),
+        pageBlocks: blocks,
       };
 
       const result = isEdit
-        ? await ConferenceService.conferenceControllerUpdate(conference!.id.toString(), payload)
-        : await ConferenceService.conferenceControllerCreate(payload);
+        ? await ConferenceService.conferenceControllerUpdate(
+            conference!.id.toString(),
+            payload as any
+          )
+        : await ConferenceService.conferenceControllerCreate(payload as any);
 
       notifications.show({
-        title: isEdit ? 'Conference Updated' : 'Conference Created',
-        message: `Conference has been successfully ${isEdit ? 'updated' : 'created'}`,
+        title: t(
+          isEdit
+            ? 'adminConferences.notifications.updateSuccessTitle'
+            : 'adminConferences.notifications.createSuccessTitle'
+        ),
+        message: t(
+          isEdit
+            ? 'adminConferences.notifications.updateSuccessMessage'
+            : 'adminConferences.notifications.createSuccessMessage'
+        ),
         color: 'green',
       });
 
       onSuccess?.(result);
     } catch (error: any) {
       notifications.show({
-        title: isEdit ? 'Update Failed' : 'Creation Failed',
-        message: error?.message || 'An unexpected error occurred',
+        title: t(
+          isEdit
+            ? 'adminConferences.notifications.updateErrorTitle'
+            : 'adminConferences.notifications.createErrorTitle'
+        ),
+        message: error?.body?.message || t('common.errors.unexpected'),
         color: 'red',
       });
     }
   };
 
-  return { form, isEdit, onSubmit: handleSubmit };
+  return { form, isEdit, onSubmit: handleSubmit, blocks, setBlocks };
 }

@@ -1,4 +1,5 @@
 import { IconPlus } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Center,
@@ -44,6 +45,8 @@ export function ConferencesTable({
   onDelete,
   onCreateNew,
 }: ConferencesTableProps) {
+  const { t } = useTranslation();
+
   const rows = conferences.map((conference) => (
     <ConferenceTableRow
       key={conference.id}
@@ -63,7 +66,7 @@ export function ConferencesTable({
           <Table.Tbody>
             {loading ? (
               <Table.Tr>
-                <Table.Td colSpan={7}>
+                <Table.Td colSpan={8}>
                   <Center p="xl">
                     <Loader size="md" />
                   </Center>
@@ -71,17 +74,17 @@ export function ConferencesTable({
               </Table.Tr>
             ) : conferences.length === 0 ? (
               <Table.Tr>
-                <Table.Td colSpan={7}>
+                <Table.Td colSpan={8}>
                   <Center p="xl">
                     <Stack align="center" gap="md">
-                      <Text c="dimmed">No conferences found</Text>
+                      <Text c="dimmed">{t('adminConferences.noConferencesFound')}</Text>
                       {onCreateNew && (
                         <Button
                           variant="light"
                           leftSection={<IconPlus size={16} />}
                           onClick={onCreateNew}
                         >
-                          Create First Conference
+                          {t('adminConferences.createFirstConference')}
                         </Button>
                       )}
                     </Stack>

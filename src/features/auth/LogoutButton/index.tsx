@@ -19,13 +19,13 @@ export function LogoutButton({ variant = 'light', size = 'sm' }: LogoutButtonPro
 
       notifications.show({
         title: t('common:notifications.success'),
-        message: t('auth:logout.successMessage', 'Successfully logged out'),
+        message: t('auth:logout.successMessage'),
         color: 'green',
       });
     } catch (error) {
       notifications.show({
         title: t('common:notifications.error'),
-        message: t('auth:logout.errorMessage', 'Logout failed'),
+        message: t('auth:logout.errorMessage'),
         color: 'red',
       });
     }

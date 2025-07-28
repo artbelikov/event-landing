@@ -1,4 +1,5 @@
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { Group, Table } from '@mantine/core';
 import { ConferenceSortField, SortOrder } from '@/api-client';
 
@@ -9,6 +10,8 @@ interface ConferencesTableHeaderProps {
 }
 
 export function ConferencesTableHeader({ sortBy, sortOrder, onSort }: ConferencesTableHeaderProps) {
+  const { t } = useTranslation();
+
   const getSortIcon = (field: ConferenceSortField) => {
     if (sortBy !== field) return null;
     return sortOrder === SortOrder.ASC ? (
@@ -22,27 +25,25 @@ export function ConferencesTableHeader({ sortBy, sortOrder, onSort }: Conference
     <Table.Thead>
       <Table.Tr>
         <Table.Th style={{ cursor: 'pointer' }} onClick={() => onSort(ConferenceSortField.NAME)}>
-          <Group gap="xs">Conference {getSortIcon(ConferenceSortField.NAME)}</Group>
+          <Group gap="xs">
+            {t('adminConferences.table.conference')} {getSortIcon(ConferenceSortField.NAME)}
+          </Group>
         </Table.Th>
 
+        <Table.Th>{t('adminConferences.table.dates')}</Table.Th>
+
+        <Table.Th>{t('adminConferences.table.place')}</Table.Th>
+        <Table.Th>{t('adminConferences.table.headliner')}</Table.Th>
+        <Table.Th>{t('adminConferences.table.status')}</Table.Th>
         <Table.Th
           style={{ cursor: 'pointer' }}
-          onClick={() => onSort(ConferenceSortField.START_DATE)}
+          onClick={() => onSort(ConferenceSortField.CREATED_AT)}
         >
-          <Group gap="xs">Start Date {getSortIcon(ConferenceSortField.START_DATE)}</Group>
+          <Group gap="xs">
+            {t('adminConferences.table.created')} {getSortIcon(ConferenceSortField.CREATED_AT)}
+          </Group>
         </Table.Th>
-
-        <Table.Th
-          style={{ cursor: 'pointer' }}
-          onClick={() => onSort(ConferenceSortField.END_DATE)}
-        >
-          <Group gap="xs">End Date {getSortIcon(ConferenceSortField.END_DATE)}</Group>
-        </Table.Th>
-
-        <Table.Th>Place</Table.Th>
-        <Table.Th>Headliner</Table.Th>
-        <Table.Th>Status</Table.Th>
-        <Table.Th>Actions</Table.Th>
+        <Table.Th>{t('adminConferences.table.actions')}</Table.Th>
       </Table.Tr>
     </Table.Thead>
   );

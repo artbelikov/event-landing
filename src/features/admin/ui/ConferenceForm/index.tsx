@@ -1,7 +1,9 @@
-import { Button, Group, Paper, Select, Stack, Textarea, TextInput, Title } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import { Box, Button, Group, Stack, Switch, Tabs, Textarea, TextInput, Title } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import type { Conference } from '@/api-client';
-import { useConferenceForm } from '@/entities/conference/hooks';
+import { useConferenceForm } from '@/entities/conference';
+import { PageBuilder } from '../PageBuilder';
 
 export interface ConferenceFormProps {
   conference?: Conference;
@@ -10,105 +12,104 @@ export interface ConferenceFormProps {
 }
 
 export function ConferenceForm({ conference, onSuccess, onCancel }: ConferenceFormProps) {
-  const { form, isEdit, onSubmit } = useConferenceForm({ conference, onSuccess });
-
-  const statusOptions = [
-    { value: 'ACTIVE', label: 'Active' },
-    { value: 'INACTIVE', label: 'Inactive' },
-  ];
+  const { t } = useTranslation();
+  const { form, isEdit, onSubmit, blocks, setBlocks } = useConferenceForm({
+    conference,
+    onSuccess,
+  });
 
   return (
-    <Paper withBorder shadow="sm" p="xl" radius="md">
+    <Box>
       <Title order={2} mb="lg">
-        {isEdit ? 'Edit Conference' : 'Create New Conference'}
+        {t(isEdit ? 'adminConferences.form.editTitle' : 'adminConferences.form.createTitle')}
       </Title>
 
-      <form onSubmit={form.onSubmit(onSubmit)}>
-        <Stack gap="md">
-          <TextInput
-            label="Conference Name"
-            placeholder="Enter conference name"
-            required
-            {...form.getInputProps('name')}
+      <Tabs defaultValue="details" keepMounted={false}>
+        <Tabs.List>
+          <Tabs.Tab value="details">{t('adminConferences.form.tabs.details')}</Tabs.Tab>
+          <Tabs.Tab value="page-builder">{t('adminConferences.form.tabs.pageBuilder')}</Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="details" pt="md">
+          <form onSubmit={form.onSubmit(onSubmit)}>
+            <Stack gap="md">
+              <TextInput
+                label={t('adminConferences.form.labels.name')}
+                placeholder={t('adminConferences.form.placeholders.name')}
+                required
+                {...form.getInputProps('name')}
+              />
+
+              <Textarea
+                label={t('adminConferences.form.labels.description')}
+                placeholder={t('adminConferences.form.placeholders.description')}
+                required
+                rows={4}
+                {...form.getInputProps('description')}
+              />
+
+              <DateTimePicker
+                label={t('adminConferences.form.labels.eventDate')}
+                placeholder={t('adminConferences.form.placeholders.eventDate')}
+                required
+                {...form.getInputProps('eventDates.0.date')}
+              />
+
+              <TextInput
+                label={t('adminConferences.form.labels.place')}
+                placeholder={t('adminConferences.form.placeholders.place')}
+                required
+                {...form.getInputProps('place')}
+              />
+
+              <TextInput
+                label={t('adminConferences.form.labels.headliner')}
+                placeholder={t('adminConferences.form.placeholders.headliner')}
+                required
+                {...form.getInputProps('headliner')}
+              />
+
+              <TextInput
+                label={t('adminConferences.form.labels.customUrl')}
+                placeholder={t('adminConferences.form.placeholders.customUrl')}
+                description={t('adminConferences.form.descriptions.customUrl')}
+                {...form.getInputProps('customUrl')}
+              />
+
+              <Switch
+                label={t('adminConferences.form.labels.status')}
+                onLabel={t('adminConferences.status.active')}
+                offLabel={t('adminConferences.status.inactive')}
+                {...form.getInputProps('status', { type: 'checkbox' })}
+              />
+
+              <Group justify="flex-end" mt="xl">
+                {onCancel && (
+                  <Button variant="subtle" onClick={onCancel}>
+                    {t('common:buttons.cancel')}
+                  </Button>
+                )}
+
+                <Button type="submit" loading={form.submitting}>
+                  {t(
+                    isEdit
+                      ? 'adminConferences.form.buttons.update'
+                      : 'adminConferences.form.buttons.create'
+                  )}
+                </Button>
+              </Group>
+            </Stack>
+          </form>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="page-builder" pt="md">
+          <PageBuilder
+            conferenceId={conference?.id || 0}
+            blocks={blocks}
+            onBlocksChange={setBlocks}
           />
-
-          <Textarea
-            label="Description"
-            placeholder="Enter conference description"
-            required
-            rows={4}
-            {...form.getInputProps('description')}
-          />
-
-          <Group grow>
-            <DateTimePicker
-              label="Start Date & Time"
-              placeholder="Select start date and time"
-              required
-              {...form.getInputProps('startDate')}
-            />
-
-            <DateTimePicker
-              label="End Date & Time"
-              placeholder="Select end date and time"
-              required
-              {...form.getInputProps('endDate')}
-            />
-          </Group>
-
-          <TextInput
-            label="Venue/Place"
-            placeholder="Enter venue or location"
-            required
-            {...form.getInputProps('place')}
-          />
-
-          <TextInput
-            label="Headliner"
-            placeholder="Enter main speaker or headliner"
-            required
-            {...form.getInputProps('headliner')}
-          />
-
-          <Group grow>
-            <Select
-              label="Status"
-              placeholder="Select conference status"
-              required
-              data={statusOptions}
-              {...form.getInputProps('status')}
-            />
-
-            <TextInput
-              label="Form ID"
-              placeholder="Enter form ID"
-              required
-              type="number"
-              {...form.getInputProps('formId')}
-            />
-          </Group>
-
-          <TextInput
-            label="Owner ID"
-            placeholder="Enter owner ID"
-            required
-            type="number"
-            {...form.getInputProps('ownerId')}
-          />
-
-          <Group justify="flex-end" mt="xl">
-            {onCancel && (
-              <Button variant="subtle" onClick={onCancel}>
-                Cancel
-              </Button>
-            )}
-
-            <Button type="submit" loading={form.submitting} disabled={!form.isValid()}>
-              {isEdit ? 'Update Conference' : 'Create Conference'}
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </Paper>
+        </Tabs.Panel>
+      </Tabs>
+    </Box>
   );
 }

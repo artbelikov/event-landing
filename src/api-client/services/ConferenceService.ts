@@ -124,4 +124,23 @@ id: string,
         return result.body;
     }
 
+    /**
+     * Get a conference by custom URL
+     * @param customUrl 
+     * @returns Conference Conference found.
+     * @throws ApiError
+     */
+    public static async conferenceControllerFindByCustomUrl(
+customUrl: string,
+): Promise<Conference> {
+        const result = await __request({
+            method: 'GET',
+            path: `/conference/url/${customUrl}`,
+            errors: {
+                404: `Conference not found.`,
+            },
+        });
+        return result.body;
+    }
+
 }

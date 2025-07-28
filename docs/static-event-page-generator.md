@@ -119,16 +119,12 @@ When creating a new conference:
 
 ## 🧠 Development Guidelines
 
-### 🔍 Initial Task
-
-> Analyze the existing frontend and backend code. Determine what's already implemented, what needs refactoring, and what is missing.
-
 ---
 
 ### 🧰 Tech Stack
 
 - **Frontend**: React + Mantine UI
-- **Backend**: Prisma + REST (or similar public API)
+- **Backend**: Prisma + NESTJS
 
 ---
 
@@ -146,7 +142,22 @@ When creating a new conference:
 ### ⚙ Backend Requirements
 
 - Write unit tests for services only. Mock with jest. mock everything that is not directly related to the currently being tested logic.
-- If changing public API, run `generate:client` on the frontend to update types
-- If editing the Prisma schema:
-  - Run `prisma:migrate`
-  - Provide a clear name when prompted
+- After making changes to the public API, run `generate:client` from F:\event-landing\ to update types.
+- After editing the Prisma schema:
+  - Run `prisma:migrate` from F:\event-landing-backend\ then run `generate:client` from F:\event-landing\
+  - Prisma's command line tools can and will ask questions. So ai must interact with terminal and watch it.
+
+---
+
+### Extras
+
+- Any ai allowed to have read only access to the contents of the following files and folders: dist, node_modules, src/api-client, src/generated, .history, .vscode,
+- For naming conventions see neighboring files and folders.
+- After ai finishes writing the code it should check the resulting files if they comply with fsd patterns. Code borken down to a smaller chunks and files is a must.
+- Do not leave comments in the code. Remove comments if you see them.
+- If I tasked ai with anything and ai encountered a file where ai see something that doesn't comply with my guidelines, but is irrelivent to the task at hand, ai must add these issues to the currenly being in progress todo list and get back to them by the queue.
+- Inline styles for jsx is allowed only for computed css. Otherwise mantine common components props are priority, then %ComponentName%.module.css is an option if custom css is required.
+- After ai finish its task, if it involved any changes in \*.ts(x), ai must check them again for potential typescript errors.
+- Any UI involving form should use useForm hook from mantine. Validation must be done with zod and zodResolver. And all that must be put in a differen file than the component.
+- Props on jsx components should be sorted a-z case insensitive
+- Rules in css should be sorted a-z

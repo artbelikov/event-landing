@@ -5,11 +5,10 @@ import '@mantine/dates/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
+import { modals } from '@/app/modalRegistry';
 import { QueryProvider } from '@/app/providers';
 import { Router } from './Router';
 import { theme } from './theme';
-
-const modals = {};
 
 export default function App() {
   return (

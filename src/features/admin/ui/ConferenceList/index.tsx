@@ -107,12 +107,7 @@ export function ConferenceList({ onConferenceSelect }: ConferenceListProps) {
         onCreateNew={handleCreateNew}
       />
 
-      <Modal
-        opened={formModalOpened}
-        onClose={closeFormModal}
-        title={editingConference ? 'Edit Conference' : 'Create Conference'}
-        size="lg"
-      >
+      <Modal opened={formModalOpened} onClose={closeFormModal} size="lg">
         <ConferenceForm
           conference={editingConference}
           onSuccess={handleFormSuccess}

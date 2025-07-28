@@ -9,6 +9,7 @@ export interface ApplyFormValues {
 
 export interface ApplyFormProps {
   initialValues?: Partial<ApplyFormValues>;
-  onSubmit: (values: ApplyFormValues) => void;
-  // You can extend with more config props as needed
+  onSubmit?: (values: ApplyFormValues) => Promise<void> | void;
+  onSuccess?: (data: ApplyFormValues) => void;
+  onError?: (errorMessage: string) => void;
 }

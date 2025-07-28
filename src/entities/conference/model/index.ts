@@ -21,3 +21,5 @@ export type ConferenceListParams = {
   sortBy?: ConferenceSortField;
   sortOrder?: SortOrder;
 };
+
+export * from './validation';

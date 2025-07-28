@@ -1,48 +1,50 @@
 import { IconCalendarEvent, IconUserCheck, IconUsers } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { SimpleGrid } from '@mantine/core';
-import { useDashboardStats } from '@/features/admin/hooks/useDashboardStats';
-import { DashboardStatsProps } from '@/features/admin/model/types';
+import { useDashboardStats } from '@/features/admin';
+import type { DashboardStatsProps } from '@/features/admin';
 import { StatsCard } from '@/shared/ui/StatsCard';
 
 export function DashboardStats({ className }: DashboardStatsProps) {
+  const { t } = useTranslation();
   const { stats, isLoading } = useDashboardStats();
 
   const statsConfig = [
     {
-      title: 'Total Conferences',
+      title: t('dashboard.stats.totalConferences'),
       value: stats.totalConferences,
-      description: 'All conferences',
+      description: t('dashboard.stats.allConferences'),
       icon: <IconCalendarEvent size={24} />,
       color: 'blue',
       trend: {
         value: 12,
-        label: 'this month',
+        label: t('dashboard.stats.thisMonth'),
         direction: 'up' as const,
       },
     },
     {
-      title: 'Active Conferences',
+      title: t('dashboard.stats.activeConferences'),
       value: stats.activeConferences,
-      description: 'Currently active',
+      description: t('dashboard.stats.currentlyActive'),
       icon: <IconCalendarEvent size={24} />,
       color: 'green',
     },
     {
-      title: 'Total Guests',
+      title: t('dashboard.stats.totalGuests'),
       value: stats.totalGuests,
-      description: 'Registered guests',
+      description: t('dashboard.stats.registeredGuests'),
       icon: <IconUserCheck size={24} />,
       color: 'orange',
     },
     {
-      title: 'Recent Guests',
+      title: t('dashboard.stats.recentGuests'),
       value: stats.recentGuests,
-      description: 'Last 7 days',
+      description: t('dashboard.stats.last7days'),
       icon: <IconUsers size={24} />,
       color: 'violet',
       trend: {
         value: 8,
-        label: 'vs last week',
+        label: t('dashboard.stats.vsLastWeek'),
         direction: 'up' as const,
       },
     },

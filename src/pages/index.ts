@@ -1,2 +1,3 @@
-export * from './admin/Login';
-export * from './Home.page';
+export { LoginPage } from './admin/Login';
+export { EventPage } from './EventPage';
+export { AuthCallbackPage } from './AuthCallback.page';

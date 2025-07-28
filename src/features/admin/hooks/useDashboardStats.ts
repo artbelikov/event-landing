@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { ConferenceStatus } from '@/api-client';
 import { useConferencesList } from '@/entities/conference';
 import { useGuestsList } from '@/entities/guest';
 import { DashboardStatsData } from '@/features/admin/model/types';
@@ -16,7 +17,9 @@ export function useDashboardStats() {
 
   const stats: DashboardStatsData = useMemo(() => {
     const totalConferences = conferences.length;
-    const activeConferences = conferences.filter((c) => c.status === 'ACTIVE').length;
+    const activeConferences = conferences.filter(
+      (c) => c.status === ConferenceStatus.ACTIVE
+    ).length;
     const totalGuests = guests.length;
 
     const recentGuests = guests.filter((g) => {
