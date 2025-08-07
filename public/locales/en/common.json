@@ -74,7 +74,6 @@
       "from": "From",
       "to": "To",
       "place": "Place",
-      "headliner": "Headliner",
       "status": "Status",
       "created": "Created",
       "actions": "Actions",
@@ -100,7 +99,6 @@
         "description": "Description",
         "eventDate": "Event Date & Time",
         "place": "Venue/Place",
-        "headliner": "Headliner",
         "customUrl": "Custom URL",
         "status": "Status"
       },
@@ -109,7 +107,6 @@
         "description": "Enter conference description",
         "eventDate": "Select date and time",
         "place": "Enter venue or location",
-        "headliner": "Enter headliner",
         "customUrl": "e.g., my-event, summer-conference"
       },
       "descriptions": {
@@ -124,8 +121,7 @@
         "descriptionMinLength": "Description must be at least 10 characters",
         "dateRequired": "Date is required",
         "atLeastOneDate": "At least one date is required",
-        "placeRequired": "Place is required",
-        "headlinerRequired": "Headliner is required"
+        "placeRequired": "Place is required"
       }
     },
     "notifications": {

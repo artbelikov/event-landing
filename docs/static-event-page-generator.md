@@ -149,7 +149,7 @@ When creating a new conference:
 
 ---
 
-### Extras
+### Other mandatory instructions
 
 - Any ai allowed to have read only access to the contents of the following files and folders: dist, node_modules, src/api-client, src/generated, .history, .vscode,
 - For naming conventions see neighboring files and folders.
@@ -161,3 +161,10 @@ When creating a new conference:
 - Any UI involving form should use useForm hook from mantine. Validation must be done with zod and zodResolver. And all that must be put in a differen file than the component.
 - Props on jsx components should be sorted a-z case insensitive
 - Rules in css should be sorted a-z
+- use bun or bunx, not npm or node
+- after starting both frontend and backend dev mode (if not already running) the app should be available at http://localhost:3000/, where http://localhost:3000/admin/\* are UIs for app owners, while any other url, including root can be a conference page.
+- When admin updates conference or any of its subordinated entities, then when the user opens or refreshes the page that was assigned to that conference, the changes must be reflected.
+- AI must utilize MCP tools to check the app current working condition and validate the changes it might have made while the http://localhost:3000 page is opened.
+- AI must utilize MCP tools in most cases because those tools provide much better data for AI to work with than me manually copy pasting or cli parsing and what not.
+- zodResolver from @mantine/form is depricated, must be refactored upon detection to mantine-form-zod-resolver. Allways import zodResolver from mantine-form-zod-resolver.
+- 1 file - 1-2 root functions max

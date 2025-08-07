@@ -3,9 +3,14 @@ import { AuthProvider } from './entities/auth/context/AuthContext';
 import { AuthCallbackPage, LoginPage } from './pages';
 import { AdminConferencesPage, AdminGuestsPage, DashboardPage } from './pages/admin';
 import { EventPage } from './pages/EventPage';
+import { HomePage } from './pages/HomePage';
 import { ProtectedRoute } from './shared/ui/ProtectedRoute';
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomePage />,
+  },
   {
     path: '/admin/login',
     element: (
@@ -22,7 +27,6 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin/dashboard',
-    index: true,
     element: (
       <AuthProvider>
         <ProtectedRoute>

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Badge, Group, Paper, Stack, Text } from '@mantine/core';
 import { ContextModalProps } from '@mantine/modals';
-import type { Guest } from '@/api-client';
+import type { Guest } from '@/generated';
 
 interface InnerProps {
   guest: Guest;

@@ -1,7 +1,7 @@
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Group, Table } from '@mantine/core';
-import { ConferenceSortField, SortOrder } from '@/api-client';
+import { ConferenceSortField, SortOrder } from '@/generated';
 
 interface ConferencesTableHeaderProps {
   sortBy: ConferenceSortField;
@@ -33,7 +33,6 @@ export function ConferencesTableHeader({ sortBy, sortOrder, onSort }: Conference
         <Table.Th>{t('adminConferences.table.dates')}</Table.Th>
 
         <Table.Th>{t('adminConferences.table.place')}</Table.Th>
-        <Table.Th>{t('adminConferences.table.headliner')}</Table.Th>
         <Table.Th>{t('adminConferences.table.status')}</Table.Th>
         <Table.Th
           style={{ cursor: 'pointer' }}

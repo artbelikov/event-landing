@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ConferenceService } from '@/api-client';
+import { useDeleteConference, apiClient } from '@/generated';
 import { conferenceKeys } from '@/entities/conference/model';
 
 export function useConferenceOperations() {
@@ -7,7 +7,7 @@ export function useConferenceOperations() {
 
   const deleteConference = useMutation({
     mutationFn: async (conferenceId: string) => {
-      await ConferenceService.conferenceControllerRemove(conferenceId);
+      await apiClient.deleteConference(parseInt(conferenceId));
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: conferenceKeys.lists() });

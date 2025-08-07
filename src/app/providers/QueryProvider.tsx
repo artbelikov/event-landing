@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ApiError } from '@/api-client';
 import { createMultiAuthErrorHandler } from '@/shared/api';
 
 interface QueryProviderProps {
@@ -18,7 +17,13 @@ const queryClient = new QueryClient({
         const handleError = errorHandler(queryClient);
 
         // Handle auth errors (401/403) - don't retry these
-        if (error instanceof ApiError && [401, 403].includes(error.status)) {
+        const errorStatus = 
+          (error instanceof Error && 'status' in error ? (error as Error & { status: number }).status : null) ||
+          (error instanceof Error && 'statusCode' in error ? (error as Error & { statusCode: number }).statusCode : null) ||
+          (typeof error === 'object' && error !== null && 'status' in error ? (error as { status: number }).status : null) ||
+          (typeof error === 'object' && error !== null && 'statusCode' in error ? (error as { statusCode: number }).statusCode : null);
+        
+        if (errorStatus && [401, 403].includes(errorStatus)) {
           handleError(error);
           return false;
         }

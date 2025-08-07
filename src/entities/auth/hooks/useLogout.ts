@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { OpenAPI } from '@/api-client';
+import { apiClient } from '@/generated';
 
 export function useLogout() {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ export function useLogout() {
     mutationFn: async () => {
       // Clear token and API configuration
       localStorage.removeItem('access_token');
-      OpenAPI.TOKEN = undefined;
+      apiClient.clearToken();
 
       // Clear all cached data
       queryClient.clear();

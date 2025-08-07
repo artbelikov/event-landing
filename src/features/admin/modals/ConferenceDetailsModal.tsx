@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Badge, Group, Paper, Stack, Text } from '@mantine/core';
 import { ContextModalProps } from '@mantine/modals';
-import type { Conference } from '@/api-client';
+import { EventDateType, type Conference } from '@/generated';
 
 interface InnerProps {
   conference: Conference;
@@ -10,7 +10,7 @@ interface InnerProps {
 export function ConferenceDetailsModal({ context, id, innerProps }: ContextModalProps<InnerProps>) {
   const { t } = useTranslation();
   const { conference } = innerProps;
-  const dates = (conference as any).eventDates ?? [];
+  const dates = conference.eventDates ?? [];
   const isDatesConfigured = Array.isArray(dates) && dates.length > 0;
 
   return (
@@ -65,29 +65,6 @@ export function ConferenceDetailsModal({ context, id, innerProps }: ContextModal
                 {t('adminConferences.table.place')}
               </Text>
               <Text>{conference.place}</Text>
-            </div>
-
-            <div>
-              <Text size="sm" fw={500} c="dimmed">
-                {t('adminConferences.table.headliner')}
-              </Text>
-              <Text>{conference.headliner}</Text>
-            </div>
-          </Group>
-
-          <Group gap="xl" mt="sm">
-            <div>
-              <Text size="sm" fw={500} c="dimmed">
-                {t('adminConferences.details.formId')}
-              </Text>
-              <Text>{conference.formId}</Text>
-            </div>
-
-            <div>
-              <Text size="sm" fw={500} c="dimmed">
-                {t('adminConferences.details.ownerId')}
-              </Text>
-              <Text>{conference.ownerId}</Text>
             </div>
           </Group>
 

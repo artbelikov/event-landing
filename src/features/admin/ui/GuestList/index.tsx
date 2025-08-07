@@ -32,8 +32,8 @@ import {
   Title,
 } from '@mantine/core';
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
-import type { Conference, Guest } from '@/api-client';
-import { SortOrder } from '@/api-client';
+import type { Conference, Guest, EventDate } from '@/generated';
+import { EventDateType, SortOrder } from '@/generated';
 import { GuestForm } from '../GuestForm';
 
 interface GuestListProps {
@@ -42,7 +42,7 @@ interface GuestListProps {
   conferenceId?: number;
 }
 
-interface GuestWithDetails extends Guest {
+interface GuestWithDetails extends Omit<Guest, 'properties'> {
   conferenceName?: string;
   properties?: Array<{ key: string; value: string }>;
 }
@@ -128,7 +128,7 @@ export function GuestList({ onGuestSelect, limit, conferenceId }: GuestListProps
     );
   }
 
-  const getConferenceDate = (eventDates: any[]) => {
+  const getConferenceDate = (eventDates: EventDate[]) => {
     if (!eventDates || eventDates.length === 0) return '';
     const firstDate = eventDates[0];
     if (firstDate.type === EventDateType.SINGLE && firstDate.date) {
@@ -144,7 +144,7 @@ export function GuestList({ onGuestSelect, limit, conferenceId }: GuestListProps
     { value: '', label: 'All Conferences' },
     ...conferences.map((conference) => ({
       value: conference.id.toString(),
-      label: `${conference.name} (${getConferenceDate((conference as any).eventDates)})`,
+      label: `${conference.name} (${getConferenceDate(conference.eventDates)})`,
     })),
   ];
 
@@ -199,11 +199,11 @@ export function GuestList({ onGuestSelect, limit, conferenceId }: GuestListProps
 
       <Table.Td>
         <Group gap="xs">
-          <ActionIcon variant="subtle" size="sm" onClick={() => onGuestSelect?.(guest)}>
+          <ActionIcon variant="subtle" size="sm" onClick={() => onGuestSelect?.(guest as Guest)}>
             <IconEye size={14} />
           </ActionIcon>
 
-          <ActionIcon variant="subtle" size="sm" color="blue" onClick={() => handleEdit(guest)}>
+          <ActionIcon variant="subtle" size="sm" color="blue" onClick={() => handleEdit(guest as Guest)}>
             <IconEdit size={14} />
           </ActionIcon>
 
@@ -211,7 +211,7 @@ export function GuestList({ onGuestSelect, limit, conferenceId }: GuestListProps
             color="red"
             variant="light"
             leftSection={<IconTrash size={14} />}
-            onClick={() => handleDelete(guest)}
+            onClick={() => handleDelete(guest as Guest)}
             size="sm"
           >
             Delete

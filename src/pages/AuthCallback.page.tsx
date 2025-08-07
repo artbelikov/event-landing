@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Center, Loader, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { OpenAPI } from '@/api-client';
+import { apiClient } from '@/generated';
 import { authKeys } from '@/entities/auth/model';
 
 export function AuthCallbackPage() {
@@ -17,7 +17,7 @@ export function AuthCallbackPage() {
     if (token) {
       // Store token and configure API client
       localStorage.setItem('access_token', token);
-      OpenAPI.TOKEN = token;
+      apiClient.setToken(token);
 
       // Invalidate auth queries to refetch user data
       queryClient.invalidateQueries({ queryKey: authKeys.all });

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Group, Loader, Select, Text } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { useConferencesList } from '@/entities/conference';
+import { EventDateType, useConferences, type EventDate } from '@/generated';
 
 interface FormValues {
   conferenceId: string;
@@ -15,9 +15,10 @@ interface ConferenceSelectorProps {
 
 export function ConferenceSelector({ form, disabled }: ConferenceSelectorProps) {
   const { t } = useTranslation();
-  const { data: conferences, isLoading, error } = useConferencesList({});
+  const { data: conferencesResponse, isLoading, error } = useConferences({});
+  const conferences = conferencesResponse?.data || [];
 
-  const formatConferenceDate = (eventDates: any[]) => {
+  const formatConferenceDate = (eventDates: EventDate[]) => {
     if (!eventDates || eventDates.length === 0) return '';
 
     const firstDate = eventDates[0];
@@ -33,7 +34,7 @@ export function ConferenceSelector({ form, disabled }: ConferenceSelectorProps) 
   const conferenceOptions =
     conferences?.map((conference) => ({
       value: conference.id.toString(),
-      label: `${conference.name} (${formatConferenceDate((conference as any).eventDates)})`,
+      label: `${conference.name} (${formatConferenceDate(conference.eventDates)})`,
     })) || [];
 
   if (isLoading) {

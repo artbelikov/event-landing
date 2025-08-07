@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Group, Paper, Stack, Title } from '@mantine/core';
-import { Guest } from '@/api-client';
+import { Guest } from '@/generated';
 import { useGuestForm } from '@/entities/guest';
 import { ConferenceSelector } from './ui/ConferenceSelector';
 import { GuestPropertiesSection } from './ui/GuestPropertiesSection';

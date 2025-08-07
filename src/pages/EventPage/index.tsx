@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Alert, Box, Container, Loader } from '@mantine/core';
 import { useConferenceByUrl } from '@/entities/conference';
 import { PageBlockRenderer } from '@/features/public';
+import type { Conference } from '@/generated';
 
 export function EventPage() {
   const { customUrl } = useParams<{ customUrl: string }>();
@@ -33,7 +34,7 @@ export function EventPage() {
     );
   }
 
-  if ((conference as any).status === 'INACTIVE') {
+  if (conference.status === 'INACTIVE') {
     return (
       <Container size="md" py="xl">
         <Alert icon={<IconAlertCircle size={16} />} title="Event Inactive" color="yellow">
@@ -43,14 +44,14 @@ export function EventPage() {
     );
   }
 
-  const sortedBlocks = [...(conference as any).pageBlocks].sort(
-    (a: any, b: any) => a.order - b.order
+  const sortedBlocks = [...conference.pageBlocks].sort(
+    (a, b) => a.order - b.order
   );
 
   return (
     <Box>
-      {sortedBlocks.map((block: any) => (
-        <PageBlockRenderer key={block.id} block={block} conference={conference as any} />
+      {sortedBlocks.map((block) => (
+        <PageBlockRenderer key={block.id} block={block} conference={conference} />
       ))}
     </Box>
   );

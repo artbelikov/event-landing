@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IconList, IconPlus, IconSettings } from '@tabler/icons-react';
 import { Button, Container, Group, Paper, Stack, Tabs, Text, Title } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import type { Conference } from '@/api-client';
+import type { Conference } from '@/generated';
 import { ConferenceList } from '@/features/admin';
 import { MODAL_KEYS } from '@/shared/constants';
 

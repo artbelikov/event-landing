@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { Alert, Container, Modal } from '@mantine/core';
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
-import { ConferenceSortField, SortOrder } from '@/api-client';
-import type { Conference } from '@/api-client';
-import { useConferencesListPaginated } from '@/entities/conference';
+import { ConferenceSortField, SortOrder, useConferences } from '@/generated';
+import type { Conference } from '@/generated';
 import { useConferenceOperations } from '../../hooks/useConferenceOperations';
 import { ConferenceForm } from '../ConferenceForm';
 import { ConferencesFilters } from './ui/ConferencesFilters';
@@ -25,12 +24,12 @@ export function ConferenceList({ onConferenceSelect }: ConferenceListProps) {
   const [formModalOpened, { open: openFormModal, close: closeFormModal }] = useDisclosure(false);
   const [editingConference, setEditingConference] = useState<Conference | undefined>();
 
-  const { data, isLoading, error, refetch } = useConferencesListPaginated({
+  const { data, isLoading, error, refetch } = useConferences({
     page,
-    pageSize,
+    limit: pageSize,
     search: debouncedSearch,
-    sortBy,
-    sortOrder,
+    sort: sortBy,
+    order: sortOrder,
   });
 
   const { deleteConference } = useConferenceOperations();
@@ -81,7 +80,7 @@ export function ConferenceList({ onConferenceSelect }: ConferenceListProps) {
   }
 
   const conferences = data?.data || [];
-  const totalPages = Math.ceil((data?.total || 0) / pageSize);
+  const totalPages = data?.totalPages || 0;
 
   return (
     <Container size="xl">

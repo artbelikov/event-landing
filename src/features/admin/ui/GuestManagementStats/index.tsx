@@ -36,7 +36,7 @@ export function GuestManagementStats() {
 
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="md">
         {stats.map(({ icon: Icon, bg, label }) => (
-          <Paper key={label as string} p="sm" withBorder bg={bg as any}>
+          <Paper key={label} p="sm" withBorder bg={bg}>
             <Group gap="sm">
               <Icon size={24} />
               <div>

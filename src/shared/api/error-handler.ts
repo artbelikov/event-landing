@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
-import { ApiError, OpenAPI } from '@/api-client';
+import { ApiError } from '@/generated';
+import { apiClient } from '@/generated';
 
 // Global flag to prevent multiple simultaneous redirects
 let isRedirecting = false;
@@ -38,7 +39,7 @@ const defaultConfig: Required<ErrorHandlerConfig> = {
   redirectUrl: '/admin/login',
   clearAuth: true,
   clearCache: true,
-  onError: () => {},
+  onError: () => { },
 };
 
 export function createErrorHandler(config: Partial<ErrorHandlerConfig> = {}) {
@@ -48,17 +49,23 @@ export function createErrorHandler(config: Partial<ErrorHandlerConfig> = {}) {
     return (error: unknown) => {
       if (isRedirecting) return;
 
-      // Check if error is an ApiError and matches our configured error codes
-      if (error instanceof ApiError && finalConfig.errorCodes.includes(error.status)) {
+      // Check if error is an ApiError or has status property and matches our configured error codes
+      const errorStatus =
+        (error instanceof ApiError ? error.status : null) ||
+        (typeof error === 'object' && error !== null && 'status' in error ? (error as { status: number }).status : null) ||
+        (typeof error === 'object' && error !== null && 'errorStatus' in error ? (error as { errorStatus: number }).errorStatus : null) ||
+        (typeof error === 'object' && error !== null && 'statusCode' in error ? (error as { statusCode: number }).statusCode : null);
+
+      if (errorStatus && finalConfig.errorCodes.includes(errorStatus)) {
         isRedirecting = true;
 
         // Call custom error handler if provided
-        finalConfig.onError(error);
+        finalConfig.onError(error as ApiError);
 
         // Clear authentication data if configured
         if (finalConfig.clearAuth) {
           localStorage.removeItem('access_token');
-          OpenAPI.TOKEN = undefined;
+          apiClient.clearToken();
         }
 
         // Clear React Query cache if configured
@@ -67,7 +74,7 @@ export function createErrorHandler(config: Partial<ErrorHandlerConfig> = {}) {
         }
 
         console.log(
-          `Authentication cleared due to ${error.status} error - cache cleared, redirecting to ${finalConfig.redirectUrl}`
+          `Authentication cleared due to ${errorStatus} error - cache cleared, redirecting to ${finalConfig.redirectUrl}`
         );
 
         // Redirect to specified URL after a short delay to allow cleanup

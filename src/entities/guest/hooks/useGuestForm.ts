@@ -1,12 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
 import {
-  CreateGuestDto,
+  CreateGuestRequest,
   Guest,
-  GuestPropertyDto,
-  GuestService,
-  UpdateGuestDto,
-} from '@/api-client';
+  CreateGuestPropertyRequest,
+  useCreateGuest,
+  UpdateGuestRequest,
+  apiClient,
+} from '@/generated';
 import {
   createGuestError,
   createGuestNotifications,
@@ -54,7 +55,7 @@ export function useGuestForm({
   const form = useForm<FormValues>({
     initialValues: {
       conferenceId: preselectedConferenceId?.toString() || guest?.conferenceId?.toString() || '',
-      properties: (guest as any)?.properties?.map((prop: any) => ({
+      properties: guest?.properties?.map((prop) => ({
         key: prop.key,
         value: prop.value,
       })) || [{ key: '', value: '' }],
@@ -92,25 +93,24 @@ export function useGuestForm({
         (prop) => prop.key.trim().length > 0 && prop.value.trim().length > 0
       );
 
-      const properties: GuestPropertyDto[] = validProperties.map((prop) => ({
+      const properties: CreateGuestPropertyRequest[] = validProperties.map((prop) => ({
         key: prop.key.trim(),
         value: prop.value.trim(),
       }));
 
       const payload = {
-        conferenceId: parseInt(values.conferenceId),
         properties,
       };
 
       let result: Guest;
 
       if (isEdit && guest) {
-        const updatePayload: UpdateGuestDto = payload;
-        result = await GuestService.guestControllerUpdate(guest.id.toString(), updatePayload);
+        const updatePayload: UpdateGuestRequest = { ...payload, id: guest.id };
+        result = await apiClient.updateGuest(guest.id, updatePayload);
         notifications.success.updated();
       } else {
-        const createPayload: CreateGuestDto = payload;
-        result = await GuestService.guestControllerCreate(createPayload);
+        const createPayload: CreateGuestRequest = payload;
+        result = await apiClient.createGuest(createPayload);
         notifications.success.created();
       }
 

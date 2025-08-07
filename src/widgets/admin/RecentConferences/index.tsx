@@ -2,9 +2,8 @@ import { IconChevronRight } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Group, Stack, Text, Title } from '@mantine/core';
-import type { Conference } from '@/api-client';
-import { useConferencesList } from '@/entities/conference';
-import { InfiniteScrollContainer } from '@/shared/ui/InfiniteScrollContainer';
+import type { Conference } from '@/generated';
+import { useConferences } from '@/generated';
 import { ConferenceItem } from './ConferenceItem';
 
 interface RecentConferencesProps {
@@ -20,9 +19,7 @@ export function RecentConferences({
 }: RecentConferencesProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const query = useConferencesList({ limit: enableInfiniteScroll ? 10 : 5 });
-
-  const renderConferenceItem = (conf: Conference) => <ConferenceItem conference={conf} />;
+  const query = useConferences({ limit: enableInfiniteScroll ? 10 : 5 });
 
   return (
     <Card withBorder padding="lg" radius="md" className={className}>
@@ -39,33 +36,22 @@ export function RecentConferences({
       </Group>
 
       {enableInfiniteScroll ? (
-        <InfiniteScrollContainer
-          data={query.data}
-          isLoading={query.isLoading}
-          isFetchingNextPage={query.isFetchingNextPage}
-          hasNextPage={query.hasNextPage}
-          fetchNextPage={query.fetchNextPage}
-          renderItem={renderConferenceItem}
-          emptyStateComponent={
-            <Text c="dimmed" ta="center" py="xl">
-              {t('dashboard.recentConferences.empty')}
-            </Text>
-          }
-          h={maxHeight}
-        />
+        <div style={{ height: maxHeight, overflow: 'auto' }}>
+          {(query.data?.data || []).map((conf: Conference) => <ConferenceItem key={conf.id} conference={conf} />)}
+        </div>
       ) : (
         <>
           {query.isLoading ? (
             <Group justify="center" p="xl">
               <Text>{t('loading.loading')}</Text>
             </Group>
-          ) : query.data.length === 0 ? (
+          ) : (query.data?.data || []).length === 0 ? (
             <Text c="dimmed" ta="center" py="xl">
               {t('dashboard.recentConferences.empty')}
             </Text>
           ) : (
             <Stack gap="sm">
-              {query.data.slice(0, 5).map((conf: Conference) => renderConferenceItem(conf))}
+              {(query.data?.data || []).slice(0, 5).map((conf: Conference) => <ConferenceItem key={conf.id} conference={conf} />)}
             </Stack>
           )}
         </>

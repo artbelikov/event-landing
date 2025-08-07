@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { OpenAPI } from '@/api-client';
-import { useIsAuthenticated } from '../hooks/useCurrentUser';
+import { apiClient, useCurrentUser } from '@/generated';
 import type { AuthState } from '../model';
 
 interface AuthContextType extends AuthState {
@@ -17,7 +16,8 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const { isAuthenticated, user, isLoading } = useIsAuthenticated();
+  const { data: user, isLoading } = useCurrentUser();
+  const isAuthenticated = !!localStorage.getItem('access_token');
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -25,18 +25,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      OpenAPI.TOKEN = token;
+      apiClient.setToken(token);
     }
   }, []);
 
   const login = (token: string, userData: any) => {
     localStorage.setItem('access_token', token);
-    OpenAPI.TOKEN = token;
+    apiClient.setToken(token);
   };
 
   const logout = () => {
     localStorage.removeItem('access_token');
-    OpenAPI.TOKEN = undefined;
+    apiClient.clearToken();
     queryClient.clear();
     navigate('/admin/login');
   };

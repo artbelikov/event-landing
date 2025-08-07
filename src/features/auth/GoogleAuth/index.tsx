@@ -1,14 +1,14 @@
 import { IconBrandGoogle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@mantine/core';
-import { OpenAPI } from '@/api-client';
+import { env } from '@/config';
 import { GoogleAuthProps } from './types';
 
 export function GoogleAuth({ onError }: GoogleAuthProps) {
   const { t } = useTranslation('auth');
 
   const handleGoogleLogin = () => {
-    window.location.href = `${OpenAPI.BASE}/auth/google`;
+    window.location.href = `${env.API_BASE_URL}/auth/google`;
   };
 
   return (

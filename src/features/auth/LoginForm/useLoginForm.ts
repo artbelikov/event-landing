@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useForm, zodResolver } from '@mantine/form';
-import { useLogin } from '@/entities/auth';
+import { useForm } from '@mantine/form';
+import { zodResolver } from 'mantine-form-zod-resolver';
+import { useLogin } from '@/generated/hooks';
 import {
   getLoginErrorMessage,
   showLoginErrorNotification,

@@ -3,7 +3,7 @@ import { IconList, IconPlus, IconSettings } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Container, Group, Paper, Stack, Tabs, Text, Title } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import type { Guest } from '@/api-client';
+import type { Guest } from '@/generated';
 import { GuestList, GuestManagementStats } from '@/features/admin';
 import { MODAL_KEYS } from '@/shared/constants';
 

@@ -1,7 +1,7 @@
 import { IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Badge, Button, Group, Table, Text } from '@mantine/core';
-import { EventDateType, type Conference } from '@/api-client';
+import { EventDateType, type Conference, type EventDate } from '@/generated';
 
 interface ConferenceTableRowProps {
   conference: Conference;
@@ -18,10 +18,10 @@ export function ConferenceTableRow({
 }: ConferenceTableRowProps) {
   const { t } = useTranslation();
 
-  const formatEventDates = (eventDates: any[]) => {
+  const formatEventDates = (eventDates: EventDate[]) => {
     if (!eventDates || eventDates.length === 0) return t('adminConferences.table.noDates');
 
-    return eventDates.map((eventDate: any, index: number) => (
+    return eventDates.map((eventDate: EventDate, index: number) => (
       <div key={index}>
         {eventDate.type === EventDateType.SINGLE && eventDate.date && (
           <Text size="sm">{new Date(eventDate.date).toLocaleDateString()}</Text>
@@ -49,14 +49,10 @@ export function ConferenceTableRow({
         </div>
       </Table.Td>
 
-      <Table.Td>{formatEventDates((conference as any).eventDates)}</Table.Td>
+      <Table.Td>{formatEventDates(conference.eventDates)}</Table.Td>
 
       <Table.Td>
         <Text size="sm">{conference.place}</Text>
-      </Table.Td>
-
-      <Table.Td>
-        <Text size="sm">{conference.headliner}</Text>
       </Table.Td>
 
       <Table.Td>

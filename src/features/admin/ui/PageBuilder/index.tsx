@@ -3,8 +3,8 @@ import { IconEdit, IconGripVertical, IconPlus, IconTrash } from '@tabler/icons-r
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, Button, Card, Group, Stack, Text, Title, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import type { PageBlock } from '@/features/admin/modals/PageBlockEditorModal';
 import { MODAL_KEYS } from '@/shared/constants';
+import { PageBlock } from '@/generated';
 
 export interface PageBuilderProps {
   conferenceId: number;

@@ -1,17 +1,18 @@
 import { useMemo } from 'react';
-import { ConferenceStatus } from '@/api-client';
-import { useConferencesList } from '@/entities/conference';
-import { useGuestsList } from '@/entities/guest';
+import { ConferenceStatus, useConferences, useGuests } from '@/generated';;
 import { DashboardStatsData } from '@/features/admin/model/types';
 
 export function useDashboardStats() {
-  const { data: conferences = [], isLoading: conferencesLoading } = useConferencesList({
+  const { data: conferencesResponse, isLoading: conferencesLoading } = useConferences({
     limit: 100,
   });
 
-  const { data: guests = [], isLoading: guestsLoading } = useGuestsList({
+  const { data: guestsResponse, isLoading: guestsLoading } = useGuests({
     limit: 100,
   });
+
+  const conferences = conferencesResponse?.data || [];
+  const guests = guestsResponse?.data || [];
 
   const isLoading = conferencesLoading || guestsLoading;
 

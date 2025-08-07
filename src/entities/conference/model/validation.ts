@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ConferenceStatus, EventDateType } from '@/api-client';
+import { ConferenceStatus, EventDateType } from '@/generated';
 
 export const createConferenceSchema = (t: (key: string) => string) =>
   z.object({
@@ -16,14 +16,14 @@ export const createConferenceSchema = (t: (key: string) => string) =>
         z.discriminatedUnion('type', [
           z.object({
             type: z.literal(EventDateType.SINGLE),
-            date: z.date({
-              required_error: t('adminConferences.form.validation.dateRequired'),
+            date: z.date().refine((date) => date instanceof Date, {
+              message: t('adminConferences.form.validation.dateRequired'),
             }),
           }),
           z.object({
             type: z.literal(EventDateType.PERIOD),
-            from: z.date({
-              required_error: t('adminConferences.form.validation.dateRequired'),
+            from: z.date().refine((date) => date instanceof Date, {
+              message: t('adminConferences.form.validation.dateRequired'),
             }),
             to: z.date().optional(),
           }),
@@ -38,7 +38,7 @@ export const createConferenceSchema = (t: (key: string) => string) =>
       .string()
       .transform((val) => val.trim())
       .optional(),
-    status: z.nativeEnum(ConferenceStatus),
+    status: z.enum([ConferenceStatus.ACTIVE, ConferenceStatus.INACTIVE]),
   });
 
 export type ConferenceFormData = z.infer<ReturnType<typeof createConferenceSchema>>;

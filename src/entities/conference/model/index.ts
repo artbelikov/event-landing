@@ -1,4 +1,4 @@
-import type { ConferenceSortField, SortOrder } from '@/api-client';
+import type { ConferenceSortField, SortOrder } from '@/generated';
 
 export const conferenceKeys = {
   all: ['conferences'] as const,

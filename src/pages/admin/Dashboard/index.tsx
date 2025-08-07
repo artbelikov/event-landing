@@ -1,6 +1,4 @@
-import React from 'react';
-import { IconSettings, IconUsers } from '@tabler/icons-react';
-import { ActionIcon, Box, Container, Grid, Group, Menu, Text, Title } from '@mantine/core';
+import { Box, Container, Grid } from '@mantine/core';
 import { AdminLayout } from '@/shared/ui/AdminLayout';
 import { DashboardQuickActions, DashboardStats } from '@/widgets';
 import { RecentConferences } from '@/widgets/admin';

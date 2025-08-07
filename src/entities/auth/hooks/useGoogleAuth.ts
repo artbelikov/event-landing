@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { OpenAPI } from '@/api-client';
+import { apiClient } from '@/generated';
 import { env } from '@/config';
 import { authKeys } from '../model';
 
@@ -16,7 +16,7 @@ export function useGoogleAuth() {
       // Clear any cached user data on auth error
       queryClient.removeQueries({ queryKey: authKeys.all });
       localStorage.removeItem('access_token');
-      OpenAPI.TOKEN = undefined;
+      apiClient.clearToken();
     },
   });
 }

@@ -100,14 +100,18 @@ export function RegistrationForm({ conferenceId, fields, onSuccess }: Registrati
         value: Array.isArray(value) ? value.join(', ') : String(value),
       }));
 
-      const response = await fetch('http://localhost:3005/guest', {
+      const response = await fetch('http://localhost:3005/guests/dynamic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           conferenceId,
-          properties,
+          properties: Object.entries(values).map(([key, value]) => ({
+            key,
+            value: Array.isArray(value) ? value.join(', ') : String(value),
+            type: fields.find(f => f.label === key)?.type || 'text',
+          })),
         }),
       });
 

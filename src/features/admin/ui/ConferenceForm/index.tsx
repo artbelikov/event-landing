@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Group, Stack, Switch, Tabs, Textarea, TextInput, Title } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
-import type { Conference } from '@/api-client';
+import type { Conference } from '@/generated';
 import { useConferenceForm } from '@/entities/conference';
 import { PageBuilder } from '../PageBuilder';
 
@@ -60,13 +60,6 @@ export function ConferenceForm({ conference, onSuccess, onCancel }: ConferenceFo
                 placeholder={t('adminConferences.form.placeholders.place')}
                 required
                 {...form.getInputProps('place')}
-              />
-
-              <TextInput
-                label={t('adminConferences.form.labels.headliner')}
-                placeholder={t('adminConferences.form.placeholders.headliner')}
-                required
-                {...form.getInputProps('headliner')}
               />
 
               <TextInput

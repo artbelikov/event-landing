@@ -11,8 +11,8 @@ import {
   Table,
   Text,
 } from '@mantine/core';
-import type { Conference } from '@/api-client';
-import { ConferenceSortField, SortOrder } from '@/api-client';
+import type { Conference } from '@/generated';
+import { ConferenceSortField, SortOrder } from '@/generated';
 import { ConferencesTableHeader } from './ConferencesTableHeader';
 import { ConferenceTableRow } from './ConferenceTableRow';
 

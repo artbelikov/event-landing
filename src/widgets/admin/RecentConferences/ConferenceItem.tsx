@@ -1,19 +1,16 @@
 import { IconEye } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Badge, Group, Paper, Text } from '@mantine/core';
-import type { Conference } from '@/api-client';
+import { Conference, EventDate } from '@/generated';
 
 interface Props {
   conference: Conference;
 }
 
-function getStartDate(conf: any): string {
-  const dates = conf.eventDates ?? [];
-  const first = dates[0];
+function getStartDate(eventDates: EventDate[] | undefined): string {
+  const first = eventDates?.[0];
   if (!first) return '';
-  return new Date(
-    first.type === EventDateType.SINGLE ? first.date : first.from
-  ).toLocaleDateString();
+  return new Date(first.date ?? '').toLocaleDateString();
 }
 
 export function ConferenceItem({ conference }: Props) {
@@ -24,7 +21,7 @@ export function ConferenceItem({ conference }: Props) {
         <div>
           <Text fw={500}>{conference.name}</Text>
           <Text size="sm" c="dimmed">
-            {getStartDate(conference)} - {conference.place}
+            {getStartDate(conference.eventDates)} - {conference.place}
           </Text>
         </div>
         <Group gap="xs">
